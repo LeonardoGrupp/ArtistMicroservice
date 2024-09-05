@@ -1,6 +1,6 @@
-package ArtistMicroservice.Artist.Service;
+package ArtistMicroservice.Artist.services;
 
-import ArtistMicroservice.Artist.Entity.Album;
+import ArtistMicroservice.Artist.entities.Album;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;

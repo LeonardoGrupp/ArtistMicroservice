@@ -1,8 +1,7 @@
-package ArtistMicroservice.Artist.Service;
+package ArtistMicroservice.Artist.services;
 
-import ArtistMicroservice.Artist.Entity.Artist;
-import ArtistMicroservice.Artist.Repository.ArtistRepository;
-import org.junit.jupiter.api.BeforeEach;
+import ArtistMicroservice.Artist.entities.Artist;
+import ArtistMicroservice.Artist.repositories.ArtistRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
