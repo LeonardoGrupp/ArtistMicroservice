@@ -13,7 +13,7 @@ public class AlbumServiceClient {
     @Autowired
     private RestTemplate restTemplate;
 
-    private static final String ALBUM_SERVICE_URL = "http://album-service/api/albums/GetAlbum";
+    private static final String ALBUM_SERVICE_URL = "http://album-service/album/GetAlbum";
 
 
     public boolean validateAlbumIds(List<Long> albumIds) {
@@ -34,6 +34,4 @@ public class AlbumServiceClient {
         }
         return true;
     }
-
-
 }

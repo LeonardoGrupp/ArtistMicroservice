@@ -10,4 +10,7 @@ public class ArtistApplication {
 		SpringApplication.run(ArtistApplication.class, args);
 	}
 
+
 }
+
+
