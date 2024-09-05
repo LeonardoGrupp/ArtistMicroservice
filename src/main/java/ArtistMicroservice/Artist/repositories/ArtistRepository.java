@@ -1,6 +1,6 @@
-package ArtistMicroservice.Artist.Repository;
+package ArtistMicroservice.Artist.repositories;
 
-import ArtistMicroservice.Artist.Entity.Artist;
+import ArtistMicroservice.Artist.entities.Artist;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

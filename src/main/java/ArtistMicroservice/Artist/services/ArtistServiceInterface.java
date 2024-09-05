@@ -1,6 +1,6 @@
-package ArtistMicroservice.Artist.Service;
+package ArtistMicroservice.Artist.services;
 
-import ArtistMicroservice.Artist.Entity.Artist;
+import ArtistMicroservice.Artist.entities.Artist;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

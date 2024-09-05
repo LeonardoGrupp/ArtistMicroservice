@@ -1,4 +1,4 @@
-package ArtistMicroservice.Artist.Entity;
+package ArtistMicroservice.Artist.entities;
 
 public class Album {
     private Long id;

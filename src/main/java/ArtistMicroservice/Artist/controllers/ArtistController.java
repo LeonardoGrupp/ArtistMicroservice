@@ -1,7 +1,7 @@
-package ArtistMicroservice.Artist.Controller;
+package ArtistMicroservice.Artist.controllers;
 
-import ArtistMicroservice.Artist.Entity.Artist;
-import ArtistMicroservice.Artist.Service.ArtistService;
+import ArtistMicroservice.Artist.entities.Artist;
+import ArtistMicroservice.Artist.services.ArtistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
