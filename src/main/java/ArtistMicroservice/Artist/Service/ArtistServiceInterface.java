@@ -11,6 +11,7 @@ public interface ArtistServiceInterface {
         Artist getArtistById(Long id);
         List<Artist> getAllArtists();
         Artist updateArtist(Long id, Artist artist);
+        Boolean checkIfArtistExistByName(String artistName);
         void deleteArtist(Long id);
 
 }

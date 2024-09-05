@@ -48,4 +48,11 @@ public class ArtistService implements ArtistServiceInterface {
     public void deleteArtist(Long id) {
         artistRepository.deleteById(id);
     }
+
+    @Override
+    public Boolean checkIfArtistExistByName(String artistName) {
+        Artist artist = artistRepository.findArtistByName(artistName);
+
+        return artist != null;
+    }
 }

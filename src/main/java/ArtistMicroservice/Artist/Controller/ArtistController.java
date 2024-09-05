@@ -40,4 +40,9 @@ public class ArtistController {
         artistService.deleteArtist(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/exists/{name}")
+    public ResponseEntity<Boolean> artistExist(@PathVariable("name") String name) {
+        return ResponseEntity.ok(artistService.checkIfArtistExistByName(name));
+    }
 }
