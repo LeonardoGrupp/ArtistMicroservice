@@ -54,5 +54,10 @@ public class ArtistService implements ArtistServiceInterface {
         artistRepository.deleteById(id);
     }
 
+    public Boolean checkIfArtistExistByName(String artistName) {
+        Artist artist = artistRepository.findArtistByName(artistName);
+
+        return artist != null;
+    }
 
 }

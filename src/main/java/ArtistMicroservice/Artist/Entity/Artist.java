@@ -20,6 +20,10 @@ public class Artist {
 
     public Artist() {}
 
+    public Artist(String name) {
+        this.name = name;
+    }
+
     public Artist(String name, List<Long> albumIdsString) {
         this.name = name;
         this.albumIdsString = albumIdsString.toString();

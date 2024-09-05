@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/artists")
+@RequestMapping("/artist")
 public class ArtistController {
 
     @Autowired
@@ -39,5 +39,10 @@ public class ArtistController {
     public ResponseEntity<Void> deleteArtist(@PathVariable Long id) {
         artistService.deleteArtist(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/exists/{name}")
+    public ResponseEntity<Boolean> artistExist(@PathVariable("name") String name) {
+        return ResponseEntity.ok(artistService.checkIfArtistExistByName(name));
     }
 }
