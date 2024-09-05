@@ -29,5 +29,4 @@ public class Album {
         this.name = name;
     }
 
-    // Getters and setters
 }

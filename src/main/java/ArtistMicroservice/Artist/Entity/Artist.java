@@ -16,7 +16,7 @@ public class Artist {
     private String name;
 
     @Column(name = "album_ids")
-    private String albumIdsString; // Storing as a comma-separated string
+    private String albumIdsString;
 
     public Artist() {}
 
@@ -24,9 +24,9 @@ public class Artist {
         this.name = name;
     }
 
-    public Artist(String name, List<Long> albumIdsString) {
+    public Artist(String name, List<Long> albumIds) {
         this.name = name;
-        this.albumIdsString = albumIdsString.toString();
+        setAlbumIds(albumIds);
     }
 
     public Long getId() {
@@ -50,6 +50,7 @@ public class Artist {
             return List.of();
         }
         return Arrays.stream(albumIdsString.split(","))
+                .map(String::trim)
                 .map(Long::parseLong)
                 .collect(Collectors.toList());
     }
