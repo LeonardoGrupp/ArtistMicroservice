@@ -10,13 +10,14 @@ import java.util.List;
 @Service
 public class ArtistService implements ArtistServiceInterface {
 
-    @Autowired
-    private ArtistRepository artistRepository;
+    private final ArtistRepository artistRepository;
+    private final AlbumServiceClient albumServiceClient;
 
     @Autowired
-    private AlbumServiceClient albumServiceClient;
-
-
+    public ArtistService(ArtistRepository artistRepository, AlbumServiceClient albumServiceClient) {
+        this.artistRepository = artistRepository;
+        this.albumServiceClient = albumServiceClient;
+    }
 
     @Override
     public Artist createArtist(Artist artist) {
@@ -52,7 +53,6 @@ public class ArtistService implements ArtistServiceInterface {
     @Override
     public Boolean checkIfArtistExistByName(String artistName) {
         Artist artist = artistRepository.findArtistByName(artistName);
-
         return artist != null;
     }
 }

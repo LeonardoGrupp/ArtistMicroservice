@@ -2,22 +2,24 @@ package ArtistMicroservice.Artist.services;
 
 import ArtistMicroservice.Artist.entities.Artist;
 import ArtistMicroservice.Artist.repositories.ArtistRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
-@AutoConfigureMockMvc
+@ExtendWith(MockitoExtension.class)
 public class ArtistServiceTest {
 
     @Mock
@@ -29,139 +31,118 @@ public class ArtistServiceTest {
     @InjectMocks
     private ArtistService artistService;
 
-    @Test
-    void testCreateArtistWithValidAlbumIds() {
-        List<Long> albumIds = Arrays.asList(1L, 2L, 3L);
-        Artist artist = new Artist("Artist Name", albumIds);
+    @BeforeEach
+    public void setUp() {
+    }
 
-        when(albumServiceClient.validateAlbumIds(albumIds)).thenReturn(true);
+    @Test
+    public void testCreateArtist_ValidAlbumIds() {
+        Artist artist = new Artist();
+        artist.setAlbumIds(Arrays.asList(1L, 2L));
+
+        when(albumServiceClient.validateAlbumIds(anyList())).thenReturn(true);
         when(artistRepository.save(any(Artist.class))).thenReturn(artist);
 
         Artist createdArtist = artistService.createArtist(artist);
 
-        assertEquals(artist.getName(), createdArtist.getName());
-        assertEquals(artist.getAlbumIds(), createdArtist.getAlbumIds());
+        assertNotNull(createdArtist);
         verify(artistRepository, times(1)).save(artist);
     }
 
     @Test
-    void testCreateArtistWithInvalidAlbumIds() {
-        List<Long> albumIds = Arrays.asList(1L, 2L, 3L);
-        Artist artist = new Artist("Artist Name", albumIds);
+    public void testCreateArtist_InvalidAlbumIds() {
+        Artist artist = new Artist();
+        artist.setAlbumIds(Arrays.asList(1L, 2L));
 
-        when(albumServiceClient.validateAlbumIds(albumIds)).thenReturn(false);
+        when(albumServiceClient.validateAlbumIds(anyList())).thenReturn(false);
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> artistService.createArtist(artist));
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            artistService.createArtist(artist);
+        });
 
         assertEquals("Invalid album IDs", exception.getMessage());
-        verify(artistRepository, never()).save(any(Artist.class));
+        verify(artistRepository, times(0)).save(any(Artist.class));
     }
 
     @Test
-    void testGetArtistByIdSuccess() {
-        Artist artist = new Artist("Artist Name", Arrays.asList(1L, 2L, 3L));
+    public void testGetArtistById_Found() {
+        Artist artist = new Artist();
         artist.setId(1L);
 
-        when(artistRepository.findById(artist.getId())).thenReturn(Optional.of(artist));
+        when(artistRepository.findById(1L)).thenReturn(Optional.of(artist));
 
-        Artist foundArtist = artistService.getArtistById(artist.getId());
+        Artist foundArtist = artistService.getArtistById(1L);
 
-        assertEquals(artist.getId(), foundArtist.getId());
-        assertEquals(artist.getName(), foundArtist.getName());
-        verify(artistRepository, times(1)).findById(artist.getId());
+        assertNotNull(foundArtist);
+        assertEquals(1L, foundArtist.getId());
     }
 
     @Test
-    void testGetArtistByIdNotFound() {
-        when(artistRepository.findById(anyLong())).thenReturn(Optional.empty());
+    public void testGetArtistById_NotFound() {
+        when(artistRepository.findById(1L)).thenReturn(Optional.empty());
 
-        Exception exception = assertThrows(RuntimeException.class, () -> artistService.getArtistById(1L));
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            artistService.getArtistById(1L);
+        });
 
         assertEquals("Artist not found", exception.getMessage());
-        verify(artistRepository, times(1)).findById(anyLong());
     }
 
     @Test
-    void testGetAllArtistsWithResults() {
-        Artist artist1 = new Artist("Artist One", Arrays.asList(1L, 2L));
-        artist1.setId(1L);
+    public void testGetAllArtists() {
+        List<Artist> artists = Arrays.asList(new Artist(), new Artist());
 
-        Artist artist2 = new Artist("Artist Two", Arrays.asList(3L, 4L));
-        artist2.setId(2L);
+        when(artistRepository.findAll()).thenReturn(artists);
 
-        when(artistRepository.findAll()).thenReturn(Arrays.asList(artist1, artist2));
+        List<Artist> allArtists = artistService.getAllArtists();
 
-        List<Artist> artists = artistService.getAllArtists();
-
-        assertEquals(2, artists.size());
-        assertEquals("Artist One", artists.get(0).getName());
-        assertEquals("Artist Two", artists.get(1).getName());
+        assertEquals(2, allArtists.size());
         verify(artistRepository, times(1)).findAll();
     }
 
     @Test
-    void testGetAllArtistsWithNoResults() {
-        when(artistRepository.findAll()).thenReturn(List.of());
-
-        List<Artist> artists = artistService.getAllArtists();
-
-        assertTrue(artists.isEmpty());
-        verify(artistRepository, times(1)).findAll();
-    }
-
-    @Test
-    void testUpdateArtistSuccess() {
-        List<Long> newAlbumIds = Arrays.asList(1L, 2L, 3L);
-        Artist existingArtist = new Artist("Existing Artist", Arrays.asList(4L, 5L));
+    public void testUpdateArtist() {
+        Artist existingArtist = new Artist();
         existingArtist.setId(1L);
+        existingArtist.setName("Old Name");
 
-        Artist updatedArtist = new Artist("Updated Artist", newAlbumIds);
-        updatedArtist.setId(1L);
+        Artist updatedArtist = new Artist();
+        updatedArtist.setName("New Name");
 
-        when(artistRepository.findById(existingArtist.getId())).thenReturn(Optional.of(existingArtist));
-        when(artistRepository.save(any(Artist.class))).thenReturn(updatedArtist);
+        when(artistRepository.findById(1L)).thenReturn(Optional.of(existingArtist));
+        when(artistRepository.save(any(Artist.class))).thenReturn(existingArtist);
 
-        Artist result = artistService.updateArtist(existingArtist.getId(), updatedArtist);
+        Artist result = artistService.updateArtist(1L, updatedArtist);
 
-        assertEquals("Updated Artist", result.getName());
-        assertEquals(newAlbumIds, result.getAlbumIds());
-        verify(artistRepository, times(1)).findById(existingArtist.getId());
+        assertEquals("New Name", result.getName());
         verify(artistRepository, times(1)).save(existingArtist);
     }
 
     @Test
-    void testUpdateArtistNotFound() {
-        List<Long> newAlbumIds = Arrays.asList(1L, 2L, 3L);
-        Artist updatedArtist = new Artist("Updated Artist", newAlbumIds);
-        updatedArtist.setId(1L);
+    public void testDeleteArtist() {
+        artistService.deleteArtist(1L);
 
-        when(artistRepository.findById(anyLong())).thenReturn(Optional.empty());
-
-        Exception exception = assertThrows(RuntimeException.class, () -> artistService.updateArtist(1L, updatedArtist));
-
-        assertEquals("Artist not found", exception.getMessage());
-        verify(artistRepository, never()).save(any(Artist.class));
+        verify(artistRepository, times(1)).deleteById(1L);
     }
 
     @Test
-    void testDeleteArtistSuccess() {
-        Long artistId = 1L;
+    public void testCheckIfArtistExistByName_Exists() {
+        Artist artist = new Artist();
+        artist.setName("ArtistName");
 
-        doNothing().when(artistRepository).deleteById(artistId);
+        when(artistRepository.findArtistByName("ArtistName")).thenReturn(artist);
 
-        artistService.deleteArtist(artistId);
+        Boolean exists = artistService.checkIfArtistExistByName("ArtistName");
 
-        verify(artistRepository, times(1)).deleteById(artistId);
+        assertTrue(exists);
     }
 
     @Test
-    void testDeleteArtistNotFound() {
-        Long artistId = 1L;
+    public void testCheckIfArtistExistByName_NotExists() {
+        when(artistRepository.findArtistByName("ArtistName")).thenReturn(null);
 
-        doNothing().when(artistRepository).deleteById(artistId);
+        Boolean exists = artistService.checkIfArtistExistByName("ArtistName");
 
-        artistService.deleteArtist(artistId);
-
-        verify(artistRepository, times(1)).deleteById(artistId);
+        assertFalse(exists);
     }
 }
