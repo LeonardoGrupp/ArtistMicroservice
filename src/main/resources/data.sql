@@ -79,7 +79,43 @@ VALUES
     ('Lemaitre'), -- 68
     ('Imaginary Cities'), -- 69
     ('Urban Cone'), -- 70
-    ('Kygo') -- 71
+    ('Kygo'), -- 71
+    ('Black Sabbath'), -- 72
+    ('Metallica'), -- 73
+    ('Slayer'), -- 74
+    ('Pantera'), -- 75
+    ('Ozzy Osbourne'), -- 76
+    ('Judas Priest'), -- 77
+    ('Britney Spears'), -- 78
+    ('Justin Timberlake'), -- 79
+    ('Lady Gaga'), -- 80
+    ('Katy Perry'), -- 81
+    ('Beyoncé'), -- 82
+    ('Taylow Swift'), -- 83
+    ('One Direction'), -- 84
+    ('Nas'), -- 85
+    ('Outkast'), -- 86
+    ('Tupac'), -- 87
+    ('50 Cent'), -- 88
+    ('A Tribe Called Quest'), -- 89
+    ('Dave Brubeck Quartet'), -- 90
+    ('John Coltrane'), -- 91
+    ('Lee Morgan'), -- 92
+    ('Hank Mobley'), -- 93
+    ('Art Blakey'), -- 94
+    ('Bill Evans'), -- 95
+    ('The Beatles'), -- 96
+    ('Pink Floyd'), -- 97
+    ('Radiohead'), -- 98
+    ('Led Zeppelin'), -- 99
+    ('David Bowie'), -- 100
+    ('Fleetwood Mac'), -- 101
+    ('Scorpions'), -- 102
+    ('Motörhead'), -- 103
+    ('Rainbow'), -- 104
+    ('Deep Purple'), -- 105
+    ('Blue Oyster Cult'), -- 106
+    ('Budgie') -- 107
 
     -- VIDEO
 --     (''),
